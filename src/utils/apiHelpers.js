@@ -60,13 +60,7 @@ export const generateImage = async (prompt) => {
 
         const response = await axiosInstance.post(postUrl, postObject);
 
-        if(!response.ok) {
-            throw new Error(`Non-200 response: ${await response.text()}`)
-        }
-
-        const responseJSON = await response.json();
-
-        const imageBase64 = responseJSON.artifacts[0].base64;
+        const imageBase64 = response.data.artifacts[0].base64;
 
         const imageUrl = `data:image/png;base64,${imageBase64}`;
 
