@@ -6,6 +6,8 @@ export const STABILITY_BASE_URL = process.env.REACT_APP_STABILITY_URL;
 
 export const STABILITY_MODEL = process.env.REACT_APP_STABILITY_MODEL;
 
+export const GEMINI_MODEL = process.env.REACT_APP_GEMINI_MODEL;
+
 export const generateTextSystemPrompt = `
 You are an expert prompt engineer for AI image generation.
 

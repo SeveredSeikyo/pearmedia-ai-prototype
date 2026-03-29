@@ -5,7 +5,8 @@ import {
     generateTextSystemPrompt, 
     STABILITY_API_KEY, 
     STABILITY_BASE_URL, 
-    STABILITY_MODEL
+    STABILITY_MODEL,
+    GEMINI_MODEL
 } from "./constants";
 import axios from "axios";
 
@@ -31,7 +32,7 @@ const cleanJSON = (text) => {
 export const getEnhancedPrompt = async (input) => {
     try {
         const response = await apiClient.models.generateContent({
-            model: 'gemini-2.5-flash',
+            model: GEMINI_MODEL,
             contents: input,
             config: {
                 systemInstruction: generateTextSystemPrompt,
@@ -99,7 +100,7 @@ export const analyzeImage = async (base64) => {
         const base64Data = base64.split(',')[1] || base64;
 
         const response = await apiClient.models.generateContent({
-            model: 'gemini-2.5-flash',
+            model: GEMINI_MODEL,
             contents: [
                 {
                     role: 'user',

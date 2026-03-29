@@ -116,6 +116,7 @@ REACT_APP_GEMINI_KEY=your_gemini_api_key_here
 REACT_APP_STABILITY_KEY=your_stability_api_key_here
 REACT_APP_STABILITY_MODEL=stable-diffusion-3-5-large
 REACT_APP_STABILITY_URL=https://api.stability.ai
+REACT_APP_GEMINI_MODEL=gemini-3.1-flash-lite-preview
 ```
 
 **Getting Your API Keys:**
