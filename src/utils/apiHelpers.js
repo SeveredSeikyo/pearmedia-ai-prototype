@@ -94,6 +94,9 @@ export const analyzeImage = async (base64) => {
                     ],
                 },
             ],
+            config: {
+                maxOutputTokens: 400,
+            }
         });
 
         return respone.text;
