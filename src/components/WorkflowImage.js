@@ -80,6 +80,7 @@ const WorkflowImage = ({ setIsLoading }) => {
                     <p className="text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wider">Style Description</p>
                     <textarea 
                         className="bg-white border border-gray-300 text-gray-800 text-sm rounded-lg mb-5 focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5 shadow-sm min-h-[100px]"
+                        rows={8}
                         value={analysis} 
                         onChange={(e) => setAnalysis(e.target.value)}
                     />

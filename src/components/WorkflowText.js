@@ -45,6 +45,7 @@ const WorkflowText = ({ setIsLoading }) => {
             
             <textarea
                 className="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg mb-5 focus:ring-brand focus:border-brand block w-full p-3.5 shadow-xs placeholder:text-body"
+                rows={8}
                 placeholder="Enter your idea..."
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
@@ -64,6 +65,7 @@ const WorkflowText = ({ setIsLoading }) => {
                 >
                     <textarea
                         className="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg mb-5 focus:ring-brand focus:border-brand block w-full p-3.5 shadow-xs placeholder:text-body"
+                        rows={8}
                         value={enhanced}
                         onChange={(e) => setEnhanced(e.target.value)}
                     />
