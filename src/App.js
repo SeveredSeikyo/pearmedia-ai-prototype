@@ -1,8 +1,8 @@
+import { useState } from 'react';
 import './App.css';
 import Navbar from './components/Navbar';
 import WorkflowImage from './components/WorkflowImage';
 import WorkflowText from './components/WorkflowText';
-
 
 function App() {
 
