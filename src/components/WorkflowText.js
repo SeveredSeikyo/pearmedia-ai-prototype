@@ -18,7 +18,7 @@ const WorkflowText = ({ setIsLoading }) => {
     const handleGenerate = async () => {
         setIsLoading(true);
         const imgUrl = await generateImage(enhanced);
-        console.log(imgUrl);
+        setImage(imgUrl);
         setIsLoading(false);
     }
 

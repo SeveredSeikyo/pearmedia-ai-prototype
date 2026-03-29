@@ -1,7 +1,25 @@
 import { GoogleGenAI } from "@google/genai";
-import { analyseImageUserPrompt, GEMINI_API_KEY, generateTextSystemPrompt } from "./constants";
+import { 
+    analyseImageUserPrompt, 
+    GEMINI_API_KEY, 
+    generateTextSystemPrompt, 
+    STABILITY_API_KEY, 
+    STABILITY_BASE_URL, 
+    STABILITY_MODEL
+} from "./constants";
+import axios from "axios";
 
 const apiClient = new GoogleGenAI({apiKey: GEMINI_API_KEY});
+
+const axiosInstance = axios.create({
+    baseURL: STABILITY_BASE_URL,
+    headers: {
+        Authorization: `Bearer ${STABILITY_API_KEY}`,
+        "Content-Type": "application/json",
+        Accept: 'application/json',
+    }
+});
+
 
 export const getEnhancedPrompt = async (input) => {
     try {
@@ -24,28 +42,35 @@ export const getEnhancedPrompt = async (input) => {
 
 export const generateImage = async (prompt) => {
     try {
-        const response = await apiClient.models.generateContent({
-            model: 'gemini-2.5-flash-image',
-            contents: prompt,
-            config: {
-                responseModalities: ['IMAGE'],
-                imageConfig: {
-                    aspectRatio: '1:1',
-                }
-            }
-        });
 
-        //const part = response.candidates[0].content.parts.find(p => p.inlineData);
+        const postUrl = `/v1/generation/${STABILITY_MODEL}/text-to-image`;
 
-        /* 
-        if(part) {
-            const { data, mimeType } = part.inlineData;
-
-            ImgUrl = `data:${mimeType};base64,${data}`;
+        const postObject = {
+            text_prompts: [
+                {
+                    text: prompt,
+                },
+            ],
+            cfg_scale: 7,
+            height: 1024,
+            width: 1024,
+            steps: 30,
+            samples: 1,
         }
-        */
 
-        console.log(response);
+        const response = await axiosInstance.post(postUrl, postObject);
+
+        if(!response.ok) {
+            throw new Error(`Non-200 response: ${await response.text()}`)
+        }
+
+        const responseJSON = await response.json();
+
+        const imageBase64 = responseJSON.artifacts[0].base64;
+
+        const imageUrl = `data:image/png;base64,${imageBase64}`;
+
+        return imageUrl;
          
     } catch (error) {
         console.error(error);
