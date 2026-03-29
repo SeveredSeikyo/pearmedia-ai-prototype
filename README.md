@@ -1,7 +1,5 @@
 <div align="center">
-    <a href="https://github.com/SeveredSeikyo/pearmedia-ai-prototype" style="text-color: black; text-decoration: none">
-        <h1>🎨 Pear Media AI Studio</h1>
-    </a>
+    <h1>🎨 Pear Media AI Studio</h1>
     <p><strong>A dual-workflow AI-powered creative platform for intelligent image generation and style analysis</strong></p>
 </div>
 
