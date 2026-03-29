@@ -1,24 +1,36 @@
 import { useState } from "react";
 import { generateImage, getEnhancedPrompt } from "../utils/apiHelpers";
 import ImageCard from "./ImageCard";
-import { Rocket, Wand, Workflow } from "lucide-react";
+import { CircleAlert, Rocket, Wand, Workflow } from "lucide-react";
 
 const WorkflowText = ({ setIsLoading }) => {
     const [input, setInput] = useState("");
     const [enhanced, setEnhanced] = useState("");
+    const [error, setError] = useState("");
     const [image, setImage] = useState("");
 
     const handleEnhance = async () => {
+        setError("");
+        setEnhanced("");
         setIsLoading(true);
         const res = await getEnhancedPrompt(input);
-        setEnhanced(res);
+        if(res.status){
+            setEnhanced(res.result);
+        } else {
+            setError(res.error)
+        }
         setIsLoading(false);
     }
 
     const handleGenerate = async () => {
+        setError("");
         setIsLoading(true);
-        const imgUrl = await generateImage(enhanced);
-        setImage(imgUrl);
+        const res = await generateImage(enhanced);
+        if(res.status) {
+            setImage(res.result);
+        } else {
+            setError(res.error);
+        }
         setIsLoading(false);
     }
 
@@ -67,6 +79,13 @@ const WorkflowText = ({ setIsLoading }) => {
             )}
 
             {image && <ImageCard src={image} />}
+
+            {error && (
+                <p className="flex flex-row gap-2 text-red-600 items-center my-5 m-auto font-semibold text-lg">
+                    <CircleAlert />
+                    <span>{error}</span>
+                </p>
+            )}
         </div>
     )
 }

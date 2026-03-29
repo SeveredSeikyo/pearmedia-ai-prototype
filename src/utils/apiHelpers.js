@@ -20,6 +20,13 @@ const axiosInstance = axios.create({
     }
 });
 
+const cleanJSON = (text) => {
+  return text
+    .replace(/```json/g, "")
+    .replace(/```/g, "")
+    .trim();
+};
+
 
 export const getEnhancedPrompt = async (input) => {
     try {
@@ -28,15 +35,24 @@ export const getEnhancedPrompt = async (input) => {
             contents: input,
             config: {
                 systemInstruction: generateTextSystemPrompt,
-                maxOutputTokens: 500,
                 temperature: 1.2,
             }
         });
-        const result = response.text;
-        return result;
+        const raw = response.text;
+        console.log(raw)
+        const parsed = JSON.parse(cleanJSON(raw));
+        console.log(parsed);
+        const result = parsed.final_prompt;
+        return {
+            status: true,
+            result
+        };
     } catch (err) {
-        console.error(err);
-        return input;
+        console.error(`Prompt Enhancement Failed: ${err}`);
+        return {
+            status: false,
+            error: 'Prompt Enhancement Failed'
+        };
     }
 }
 
@@ -64,11 +80,17 @@ export const generateImage = async (prompt) => {
 
         const imageUrl = `data:image/png;base64,${imageBase64}`;
 
-        return imageUrl;
+        return {
+            status: true,
+            result: imageUrl
+        };
          
     } catch (error) {
-        console.error(error);
-        return prompt;
+        console.error(`Image Generation Failed: ${error}`);
+        return {
+            status: false,
+            error: 'Failed to Generate Image'
+        };
     }
 }
 
@@ -76,7 +98,7 @@ export const analyzeImage = async (base64) => {
     try {
         const base64Data = base64.split(',')[1] || base64;
 
-        const respone = await apiClient.models.generateContent({
+        const response = await apiClient.models.generateContent({
             model: 'gemini-2.5-flash',
             contents: [
                 {
@@ -94,14 +116,22 @@ export const analyzeImage = async (base64) => {
                     ],
                 },
             ],
-            config: {
-                maxOutputTokens: 400,
-            }
         });
 
-        return respone.text;
+        const raw = response.text;
+        console.log(raw)
+        const parsed = JSON.parse(cleanJSON(raw));
+        console.log(parsed);
+        const result = parsed.final_prompt;
+        return {
+            status: true,
+            result
+        };
     } catch (err) {
-        console.error(err);
-        return "Analysis Failed.";
+        console.error(`Image Analysis Failed: ${err}`);
+        return {
+            status: false,
+            error: "Image Analysis Failed."
+        };
     }
 };

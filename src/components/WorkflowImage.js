@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { analyzeImage, generateImage } from "../utils/apiHelpers";
 import ImageCard from "./ImageCard";
-import { Search, Wand2, Upload, Workflow } from "lucide-react";
+import { Search, Wand2, Upload, Workflow, CircleAlert } from "lucide-react";
 
 const WorkflowImage = ({ setIsLoading }) => {
     const [file, setFile] = useState(null);
     const [analysis, setAnalysis] = useState("");
     const [image, setImage] = useState("");
+    const [error, setError] = useState("");
 
     const handleUpload = (e) => {
         const reader = new FileReader();
@@ -19,16 +20,28 @@ const WorkflowImage = ({ setIsLoading }) => {
     };
 
     const handleAnalyze = async () => {
+        setError("");
+        setImage("");
         setIsLoading(true);
-        const result = await analyzeImage(file);
-        setAnalysis(result);
+        const res = await analyzeImage(file);
+        if(res.status){
+            setAnalysis(res.result)
+        } else {
+            setError(res.error)
+        }
         setIsLoading(false);
     };
 
     const handleGenerate = async () => {
+        setImage("");
+        setError("");
         setIsLoading(true);
-        const img = await generateImage(analysis);
-        setImage(img);
+        const res = await generateImage(analysis);
+        if(res.status) {
+            setImage(res.result);
+        }else {
+            setError(res.error)
+        }
         setIsLoading(false);
     };
 
@@ -86,6 +99,13 @@ const WorkflowImage = ({ setIsLoading }) => {
                     <p className="text-center text-sm text-gray-500 mb-4 italic">Resulting Masterpiece</p>
                     <ImageCard src={image} />
                 </div>
+            )}
+
+            {error && (
+                <p className="flex flex-row gap-2 text-red-600 items-center my-5 m-auto font-semibold text-lg">
+                    <CircleAlert />
+                    <span>{error}</span>
+                </p>
             )}
         </div>
     );
