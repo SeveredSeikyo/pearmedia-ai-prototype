@@ -13,7 +13,7 @@ function App() {
 
 
     return (
-      <div className='relative bg-gray-200 flex items-center justify-center h-screen max-h-full w-full'>
+      <div className='relative bg-gray-200 flex flex-col items-center justify-start min-h-screen w-full py-10 '>
 
         {
           isLoading 
@@ -24,7 +24,7 @@ function App() {
         }
 
         <div 
-          className="flex flex-col w-[90%] h-[90%]"
+          className="flex flex-col w-[90%] max-w-4xl h-fit"
         >
           <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
 
