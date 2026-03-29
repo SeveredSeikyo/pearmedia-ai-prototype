@@ -1,9 +1,11 @@
-import React from "react";
-
 const ImageCard = ({ src }) => {
     return (
         <div>
-            <img src={src} alt="result" style={{ width: "300px" }} />
+            <img
+                className="h-auto max-w-[300px] mx-auto"
+                src={src}
+                alt="result" 
+            />
         </div>
     );
 };
